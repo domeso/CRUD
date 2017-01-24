@@ -8001,3 +8001,18 @@ html.ie11 .dropdown-menu ul.menu li a {
 html.ie11 .bs-searchbox .form-control {
   width: 90%; }
 
+section.content input:focus,
+section.content select:focus,
+section.content textarea:focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+.form-group .form-line .form-label {
+  width: 100%;
+}
+
+.table .form-group {
+  margin-bottom: 0;
+}
