@@ -8001,9 +8001,16 @@ html.ie11 .dropdown-menu ul.menu li a {
 html.ie11 .bs-searchbox .form-control {
   width: 90%; }
 
-section.content input:focus,
-section.content select:focus,
-section.content textarea:focus {
+section.content .container-fluid {
+  padding-left: 0;
+}
+
+html section.content input:focus,
+html .modal input:focus,
+html section.content select:focus,
+html .modal select:focus,
+html section.content textarea:focus,
+html .modal textarea:focus {
   border-color: transparent !important;
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
@@ -8015,4 +8022,99 @@ section.content textarea:focus {
 
 .table .form-group {
   margin-bottom: 0;
+}
+
+.mirror-h {
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.mirror-v {
+  -moz-transform: scale(1, -1);
+  -webkit-transform: scale(1, -1);
+  -o-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+
+.form-group .crud-sort {
+  display: none;
+  float: right;
+}
+
+.form-group:hover .crud-sort,
+.form-group .crud-sort.active {
+  display: block;
+}
+
+section.content .table {
+  margin-bottom: 0;
+}
+
+section.content .pagination {
+  margin: 25px 0 0 0;
+}
+
+.crud-table-foot {
+  text-align: center;
+}
+
+html .open > .dropdown-menu {
+    min-width: 250px;
+}
+
+html .modal-backdrop {
+  z-index: 99999;
+}
+
+html .modal {
+  z-index: 999999;
+}
+
+html .tooltip {
+  z-index: 999999;
+}
+
+html i[data-toggle=tooltip] {
+  cursor: help;
+}
+
+html .form-group .form-line.focused .form-label {
+  z-index: 5;
+}
+
+html .form-group div.error {
+    border-left-color: transparent;
+}
+
+html .form-group div.error {
+    background: transparent;
+    border-left: 0 none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+
+html .type-checkbox .form-line .form-label,
+html .type-radio .form-line .form-label {
+  cursor: default;
+  position: static;
+}
+
+html .type-checkbox .form-line,
+html .type-radio .form-line {
+  margin-top:4px;
+}
+
+html .modal-content .row {
+    top: 10px;
+    margin-bottom: 10px;
+}
+
+html .dropdown-toggle {
+  padding: 12px 12px 0 0;
 }

@@ -27,227 +27,11 @@ $.AdminBSB.options = {
         black: '#000000',
         white: '#ffffff'
     },
-    leftSideBar: {
-        scrollColor: 'rgba(0,0,0,0.5)',
-        scrollWidth: '4px',
-        scrollAlwaysVisible: false,
-        scrollBorderRadius: '0',
-        scrollRailBorderRadius: '0'
-    },
     dropdownMenu: {
         effectIn: 'fadeIn',
         effectOut: 'fadeOut'
     }
 }
-
-/* Left Sidebar - Function =================================================================================================
-*  You can manage the left sidebar menu options
-*  
-*/
-$.AdminBSB.leftSideBar = {
-    activate: function () {
-        var _this = this;
-        var $body = $('body');
-        var $overlay = $('.overlay');
-
-        //Close sidebar
-        $(window).click(function (e) {
-            var $target = $(e.target);
-            if (e.target.nodeName.toLowerCase() === 'i') { $target = $(e.target).parent(); }
-
-            if (!$target.hasClass('bars') && _this.isOpen() && $target.parents('#leftsidebar').length === 0) {
-                if (!$target.hasClass('js-right-sidebar')) $overlay.fadeOut();
-                $body.removeClass('overlay-open');
-            }
-        });
-
-        $.each($('.menu-toggle.toggled'), function (i, val) {
-            $(val).next().slideToggle(0);
-        });
-
-        //When page load
-        $.each($('.menu .list li.active'), function (i, val) {
-            var $activeAnchors = $(val).find('a:eq(0)');
-
-            $activeAnchors.addClass('toggled');
-            $activeAnchors.next().show();
-        });
-
-        //Collapse or Expand Menu
-        $('.menu-toggle').on('click', function (e) {
-            var $this = $(this);
-            var $content = $this.next();
-
-            if ($($this.parents('ul')[0]).hasClass('list')) {
-                var $not = $(e.target).hasClass('menu-toggle') ? e.target : $(e.target).parents('.menu-toggle');
-
-                $.each($('.menu-toggle.toggled').not($not).next(), function (i, val) {
-                    if ($(val).is(':visible')) {
-                        $(val).prev().toggleClass('toggled');
-                        $(val).slideUp();
-                    }
-                });
-            }
-
-            $this.toggleClass('toggled');
-            $content.slideToggle(320);
-        });
-
-        //Set menu height
-        _this.setMenuHeight();
-        _this.checkStatuForResize(true);
-        $(window).resize(function () {
-            _this.setMenuHeight();
-            _this.checkStatuForResize(false);
-        });
-
-        //Set Waves
-        Waves.attach('.menu .list a', ['waves-block']);
-        Waves.init();
-    },
-    setMenuHeight: function () {
-        if (typeof $.fn.slimScroll != 'undefined') {
-            var configs = $.AdminBSB.options.leftSideBar;
-            var height = ($(window).height() - ($('.legal').outerHeight() + $('.user-info').outerHeight() + $('.navbar').innerHeight()));
-            var $el = $('.list');
-
-            $el.slimScroll({ destroy: true }).height("auto");
-            $el.parent().find('.slimScrollBar, .slimScrollRail').remove();
-
-            $el.slimscroll({
-                height: height + "px",
-                color: configs.scrollColor,
-                size: configs.scrollWidth,
-                alwaysVisible: configs.scrollAlwaysVisible,
-                borderRadius: configs.scrollBorderRadius,
-                railBorderRadius: configs.scrollRailBorderRadius
-            });
-        }
-    },
-    checkStatuForResize: function (firstTime) {
-        var $body = $('body');
-        var $openCloseBar = $('.navbar .navbar-header .bars');
-        var width = $body.width();
-
-        if (firstTime) {
-            $body.find('.content, .sidebar').addClass('no-animate').delay(1000).queue(function () {
-                $(this).removeClass('no-animate').dequeue();
-            });
-        }
-
-        if (width < 1170) {
-            $body.addClass('ls-closed');
-            $openCloseBar.fadeIn();
-        }
-        else {
-            $body.removeClass('ls-closed');
-            $openCloseBar.fadeOut();
-        }
-    },
-    isOpen: function () {
-        return $('body').hasClass('overlay-open');
-    }
-};
-//==========================================================================================================================
-
-/* Right Sidebar - Function ================================================================================================
-*  You can manage the right sidebar menu options
-*  
-*/
-$.AdminBSB.rightSideBar = {
-    activate: function () {
-        var _this = this;
-        var $sidebar = $('#rightsidebar');
-        var $overlay = $('.overlay');
-
-        //Close sidebar
-        $(window).click(function (e) {
-            var $target = $(e.target);
-            if (e.target.nodeName.toLowerCase() === 'i') { $target = $(e.target).parent(); }
-
-            if (!$target.hasClass('js-right-sidebar') && _this.isOpen() && $target.parents('#rightsidebar').length === 0) {
-                if (!$target.hasClass('bars')) $overlay.fadeOut();
-                $sidebar.removeClass('open');
-            }
-        });
-
-        $('.js-right-sidebar').on('click', function () {
-            $sidebar.toggleClass('open');
-            if (_this.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
-        });
-    },
-    isOpen: function () {
-        return $('.right-sidebar').hasClass('open');
-    }
-}
-//==========================================================================================================================
-
-/* Searchbar - Function ================================================================================================
-*  You can manage the search bar
-*  
-*/
-var $searchBar = $('.search-bar');
-$.AdminBSB.search = {
-    activate: function () {
-        var _this = this;
-
-        //Search button click event
-        $('.js-search').on('click', function () {
-            _this.showSearchBar();
-        });
-
-        //Close search click event
-        $searchBar.find('.close-search').on('click', function () {
-            _this.hideSearchBar();
-        });
-
-        //ESC key on pressed
-        $searchBar.find('input[type="text"]').on('keyup', function (e) {
-            if (e.keyCode == 27) {
-                _this.hideSearchBar();
-            }
-        });
-    },
-    showSearchBar: function () {
-        $searchBar.addClass('open');
-        $searchBar.find('input[type="text"]').focus();
-    },
-    hideSearchBar: function () {
-        $searchBar.removeClass('open');
-        $searchBar.find('input[type="text"]').val('');
-    }
-}
-//==========================================================================================================================
-
-/* Navbar - Function =======================================================================================================
-*  You can manage the navbar
-*  
-*/
-$.AdminBSB.navbar = {
-    activate: function () {
-        var $body = $('body');
-        var $overlay = $('.overlay');
-
-        //Open left sidebar panel
-        $('.bars').on('click', function () {
-            $body.toggleClass('overlay-open');
-            if ($body.hasClass('overlay-open')) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
-        });
-
-        //Close collapse bar on click event
-        $('.nav [data-close="true"]').on('click', function () {
-            var isVisible = $('.navbar-toggle').is(':visible');
-            var $navbarCollapse = $('.navbar-collapse');
-
-            if (isVisible) {
-                $navbarCollapse.slideUp(function () {
-                    $navbarCollapse.removeClass('in').removeAttr('style');
-                });
-            }
-        });
-    }
-}
-//==========================================================================================================================
 
 /* Input - Function ========================================================================================================
 *  You can manage the inputs(also textareas) with name of class 'form-control'
@@ -263,13 +47,16 @@ $.AdminBSB.input = {
         //On focusout event
         $('.form-control').focusout(function () {
             var $this = $(this);
+
+            $(this).parent().addClass('focused');
+
             if ($this.parents('.form-group').hasClass('form-float')) {
-                if ($this.val() == '') { $this.parents('.form-line').removeClass('focused'); }
+                if ($this.val() == '' ) { $this.parents('.form-line').removeClass('focused'); }
             }
-            else {
+            else if( !$this.is(':checked') ) {
                 $this.parents('.form-line').removeClass('focused');
             }
-        });
+        }).focusout();
 
         //On label click
         $('body').on('click', '.form-float .form-line .form-label', function () {
@@ -432,15 +219,58 @@ $.AdminBSB.browser = {
 }
 //==========================================================================================================================
 
-$(function () {
-    $.AdminBSB.browser.activate();
-    $.AdminBSB.leftSideBar.activate();
-    $.AdminBSB.rightSideBar.activate();
-    $.AdminBSB.navbar.activate();
+function notification( text, type ) {
+    $.notifyClose();
+
+    return $.notify({
+        message: text
+    },
+    {
+        type: type,
+        newest_on_top: true,
+        allow_dismiss: true,
+        timer: 5000,
+        z_index: 99999999,
+        placement: {
+            from: 'top',
+            align: 'center'
+        },
+        animate: {
+            enter: 'animated bounceInRight',
+            exit: 'animated bounceOutRight'
+        },
+        template: '<div data-notify="container" class="bootstrap-notify-container alert alert-dismissible {0} ' + "p-r-35" + '" role="alert">' +
+        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+        '<span data-notify="icon"></span> ' +
+        '<span data-notify="title">{1}</span> ' +
+        '<span data-notify="message">{2}</span>' +
+        '<div class="progress" data-notify="progressbar">' +
+        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+        '</div>' +
+        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+        '</div>'
+    });
+}
+
+function crud_init() {
     $.AdminBSB.dropdownMenu.activate();
     $.AdminBSB.input.activate();
     $.AdminBSB.select.activate();
-    $.AdminBSB.search.activate();
+
+    $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+    });
+
+    setTimeout(function() {
+        autosize.destroy( $('textarea.auto-growth') );
+        autosize( $('textarea.auto-growth') );
+    }, 500);
+}
+
+$(function () {
+    $.AdminBSB.browser.activate();
+
+    crud_init();
 
     setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);
 });
